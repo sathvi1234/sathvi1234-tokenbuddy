@@ -41,24 +41,33 @@ Optimization Mode: ${mode.toUpperCase()}
 Rule: ${modeInstructions[mode] || modeInstructions.lean}
 CRITICAL: Respond with ONLY the compressed prompt. Do not include introductory text, explanations, or quotes.`;
 
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
+  // On Vercel serverless functions, localhost/127.0.0.1 cannot reach the user's local machine.
+  // We preserve local Gemma for local development, but in cloud production without an external
+  // OLLAMA_BASE_URL configured, we skip localhost immediately for instant response.
+  const isVercel = Boolean(process.env.VERCEL);
+  const isLocalHost = ollamaBaseUrl.includes('127.0.0.1') || ollamaBaseUrl.includes('localhost');
+  const shouldAttemptOllama = !(isVercel && isLocalHost);
 
-    const ollamaResponse = await fetch(`${ollamaBaseUrl}/api/generate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: ollamaModel,
-        prompt: `${systemPrompt}\n\nPrompt:\n${prompt}`,
-        stream: false,
-      }),
-      signal: controller.signal,
-    });
+  if (shouldAttemptOllama) {
+    try {
+      const controller = new AbortController();
+      const timeoutMs = isLocalHost ? 2000 : 5000;
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-    clearTimeout(timeoutId);
+      const ollamaResponse = await fetch(`${ollamaBaseUrl}/api/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: ollamaModel,
+          prompt: `${systemPrompt}\n\nPrompt:\n${prompt}`,
+          stream: false,
+        }),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
 
     if (ollamaResponse.ok) {
       const data = await ollamaResponse.json();
@@ -110,6 +119,7 @@ CRITICAL: Respond with ONLY the compressed prompt. Do not include introductory t
   } catch {
     // Ollama unreachable, timed out, or threw connection error -> proceed to fallback
   }
+}
 
   // Fallback to deterministic client-side optimizer
   const fallbackResult = optimizePrompt(prompt, mode);

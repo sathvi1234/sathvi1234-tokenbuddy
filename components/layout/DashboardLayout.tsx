@@ -12,18 +12,18 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, loginAsDemo } = useAuth();
   const router = useRouter();
   const sidebarOpen = useUIStore((state) => state.sidebarOpen);
   const setSidebarOpen = useUIStore((state) => state.setSidebarOpen);
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
 
-  // Redirect to landing page if not authenticated
+  // Auto-login as Demo User if reaching dashboard without active session
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/');
+      loginAsDemo();
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, loginAsDemo]);
 
   if (isLoading) {
     return (
