@@ -108,7 +108,7 @@ export default function PlaygroundPage() {
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="model">Model</Label>
-                <Select value={model} onValueChange={setModel}>
+                <Select value={model} onValueChange={(val) => val && setModel(val)}>
                   <SelectTrigger id="model" className="mt-2">
                     <SelectValue />
                   </SelectTrigger>
@@ -129,7 +129,7 @@ export default function PlaygroundPage() {
                 </div>
                 <Slider
                   value={[temperature]}
-                  onValueChange={(value) => setTemperature(value[0])}
+                  onValueChange={(value) => setTemperature(Array.isArray(value) ? value[0] : Number(value))}
                   min={0}
                   max={2}
                   step={0.1}
@@ -144,7 +144,7 @@ export default function PlaygroundPage() {
                 </div>
                 <Slider
                   value={[maxTokens]}
-                  onValueChange={(value) => setMaxTokens(value[0])}
+                  onValueChange={(value) => setMaxTokens(Array.isArray(value) ? value[0] : Number(value))}
                   min={1}
                   max={4000}
                   step={1}

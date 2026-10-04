@@ -18,10 +18,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const setSidebarOpen = useUIStore((state) => state.setSidebarOpen);
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
 
-  // Redirect to login if not authenticated
+  // Redirect to landing page if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/login');
+      router.push('/');
     }
   }, [isAuthenticated, isLoading, router]);
 

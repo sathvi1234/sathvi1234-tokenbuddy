@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useThemeStore } from '@/lib/store/theme-store';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useUIStore } from '@/lib/store/ui-store';
@@ -35,6 +36,7 @@ interface NavbarProps {
 }
 
 export function Navbar({ onSidebarToggle, showSidebar = true }: NavbarProps) {
+  const router = useRouter();
   const isDark = useThemeStore((state) => state.isDark);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const { user, logout } = useAuth();
@@ -48,6 +50,7 @@ export function Navbar({ onSidebarToggle, showSidebar = true }: NavbarProps) {
       type: 'success',
       message: 'Logged out successfully',
     });
+    router.push('/');
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -76,9 +79,9 @@ export function Navbar({ onSidebarToggle, showSidebar = true }: NavbarProps) {
           )}
           <Link href="/dashboard" className="flex items-center gap-2 font-bold">
             <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
-              <span className="text-xs font-bold text-white">SLC</span>
+              <span className="text-xs font-bold text-white">TB</span>
             </div>
-            <span className="hidden text-lg font-bold sm:inline">SmartLLM</span>
+            <span className="hidden text-lg font-bold sm:inline">TokenBuddy</span>
           </Link>
         </div>
 
@@ -115,36 +118,30 @@ export function Navbar({ onSidebarToggle, showSidebar = true }: NavbarProps) {
           {/* User Profile Dropdown */}
           {user && (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-md p-1 hover:bg-accent">
-                  <Avatar className="size-8">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <span className="hidden text-sm font-medium sm:inline max-w-[120px] truncate">
-                    {user.name}
-                  </span>
-                </button>
+              <DropdownMenuTrigger className="flex items-center gap-2 rounded-md p-1 hover:bg-accent outline-none">
+                <Avatar className="size-8">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <span className="hidden text-sm font-medium sm:inline max-w-[120px] truncate">
+                  {user.name}
+                </span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>
                   <div className="flex flex-col gap-1">
                     <p className="font-semibold">{user.name}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                    <p className="text-xs text-muted-foreground">{user.role || 'Demo User'}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard">
-                    <LayoutDashboard className="mr-2 size-4" />
-                    Dashboard
-                  </Link>
+                <DropdownMenuItem onClick={() => router.push('/dashboard')}>
+                  <LayoutDashboard className="mr-2 size-4" />
+                  Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard/settings">
-                    <Settings className="mr-2 size-4" />
-                    Settings
-                  </Link>
+                <DropdownMenuItem onClick={() => router.push('/dashboard/settings')}>
+                  <Settings className="mr-2 size-4" />
+                  Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>

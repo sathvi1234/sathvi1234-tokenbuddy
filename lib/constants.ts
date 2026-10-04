@@ -190,10 +190,10 @@ export const API_CONFIG = {
 
 // Local Storage Keys
 export const STORAGE_KEYS = {
-  AUTH_TOKEN: 'smartllm_auth_token',
-  THEME: 'smartllm_theme',
-  USER: 'smartllm_user',
-  SELECTED_PROJECT: 'smartllm_selected_project',
+  AUTH_TOKEN: 'tokenbuddy_auth_token',
+  THEME: 'tokenbuddy_theme',
+  USER: 'tokenbuddy_user',
+  SELECTED_PROJECT: 'tokenbuddy_selected_project',
 };
 
 // Keyboard Shortcuts

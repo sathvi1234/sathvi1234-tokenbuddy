@@ -4,9 +4,8 @@ import './globals.css';
 import { RootLayoutClient } from './layout-client';
 
 export const metadata: Metadata = {
-  title: 'SmartLLM Cloud - AI Cost & Token Optimization',
-  description: 'Optimize every AI request for cost, speed, quality, and privacy',
-  generator: 'v0.app',
+  title: 'TokenBuddy - Save tokens. Save context. Keep your AI private.',
+  description: 'Save tokens. Save context. Keep your AI private. Built for developers using AI coding assistants.',
 };
 
 export const viewport: Viewport = {

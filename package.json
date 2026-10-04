@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "tokenbuddy",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,6 +20,7 @@
     "next": "16.2.6",
     "react": "^19",
     "react-dom": "^19",
+    "react-is": "^19.3.0",
     "react-query": "^3.39.3",
     "recharts": "^3.9.2",
     "shadcn": "^4.8.0",

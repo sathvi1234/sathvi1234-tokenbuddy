@@ -164,7 +164,7 @@ export function TokenUsageChart({
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
               }}
-              formatter={(value) => `${(value / 1000000).toFixed(1)}M`}
+              formatter={(value: any) => `${(Number(value || 0) / 1000000).toFixed(1)}M`}
             />
             <Line type="monotone" dataKey="tokens" stroke="#ec4899" strokeWidth={2} dot={{ r: 4 }} />
           </LineChart>

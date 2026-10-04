@@ -87,10 +87,8 @@ export function ProjectCard({ project, onDelete, onEdit }: ProjectCardProps) {
             Created {new Date(project.createdAt).toLocaleDateString()}
           </p>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="ghost">
-                <MoreVertical className="size-4" />
-              </Button>
+            <DropdownMenuTrigger className="inline-flex size-8 items-center justify-center rounded-md hover:bg-muted text-muted-foreground hover:text-foreground outline-none">
+              <MoreVertical className="size-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onEdit?.(project)}>
